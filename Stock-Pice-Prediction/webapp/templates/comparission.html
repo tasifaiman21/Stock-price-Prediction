@@ -1,0 +1,80 @@
+{%extends 'index.html'%}
+
+{%block user%}
+{%if user=='admins'%}
+<li><a href="/users">Users List</a></li>
+<li><a href="/companies">Company List</a></li>
+<li><a href="/addcompany">Add Companies</a></li>
+<li><a href="/adddata">Add Data</a></li>
+<li><a href="/prediction">Prediction</a></li>
+<li><a href="/reports">Reports</a></li>
+{%endif%}
+{%endblock%}
+
+
+
+{%block marq%}
+{%endblock%}
+{% block content%}
+<div style="float: left;padding:20px;height:50%; width:40%;text-align:center; background-color: orchid; ">
+    {%for i in data['company']%}
+    {%set c=data['company'][loop.index-1]%}
+    {%set p=data['p_price'][loop.index-1]%}
+    {%set lp=data['c_l'][loop.index-1]%}
+    {%set change=((p-lp)/lp)*100%}
+
+    
+    <h2>
+        {{c}} will {%if change > 0 %} Raise {%else%} Fall{%endif%} by {{"%.2f"|format(change|abs)}}% compare to the last date price and will be
+        {{"%.2f"|format(p)}} {%if change > 0 %} <blockquote style="background-color: green;">(Profitable) </blockquote> {%else%} <blockquote style="background-color: red;">(Loss)</blockquote>{%endif%}
+    </h2><br>
+      
+    
+
+
+    {%endfor%}
+</div>
+
+<div style="float: right;">
+    <div style="position: relative; height:50vh; width:49vw">
+        <canvas id="myChart"></canvas>  
+        <h3 style="text-align: center;">Fig : Date vs Price Graph</h3>
+    </div>
+        
+    </div>
+
+    <script>
+            var ctx = document.getElementById('myChart').getContext('2d');
+            var linechart={
+                type: 'line',
+                data: {
+                    labels: JSON.parse('{{x[0][-8:]|tojson}}'),
+                    datasets: []
+                },
+                options: {
+                    scales: {
+                        xAxes: [{
+                            stacked: true
+                        }],
+                        yAxes: [{
+                            stacked: false,
+                            ticks: {
+
+                                beginAtZero: true,
+                                stepSize: 5
+                            }
+                        }]
+                    }
+                }
+            }
+
+                var array=JSON.parse('{{y|tojson}}')
+                var cp=JSON.parse('{{z|tojson}}')
+                
+                array.forEach(function (a, i) {  
+                    x=a.slice(-8)
+                    linechart.data.datasets.push({label:cp[i],fill:false,borderColor:'#'+Math.random().toString(16).slice(-6),data:x})
+                });
+            var myChart = new Chart(ctx, linechart)
+    </script>
+    {%endblock%}

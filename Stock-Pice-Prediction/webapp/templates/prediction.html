@@ -1,0 +1,52 @@
+{%extends 'index.html'%}
+
+{%block user%}
+{%if user=='admins'%}
+<li><a href="/users">Users List</a></li>
+<li><a href="/companies">Company List</a></li>
+<li><a href="/addcompany">Add Companies</a></li>
+<li><a href="/adddata">Add Data</a></li>
+<li><a href="/prediction">Prediction</a></li>
+<li><a href="/reports">Reports</a></li>
+{%endif%}
+{%endblock%}
+
+
+
+{%block marq%}
+{%endblock%}
+{% block content%}
+<div style="display: inline-block;width:50%;" >
+    {%for i in data['company']%}
+    {%set c=data['company'][loop.index-1]%}
+    {%set p=data['p_price'][loop.index-1]%}
+    {%set lp=data['c_l'][loop.index-1]%}
+    {%set change=((p-lp)/lp)*100%}
+
+
+    <h2 style="padding:20px;text-align:center; background-color: orchid; ">
+     {{c}} will {%if change > 0 %} raise {%else%} fall{%endif%} by {{"%.2f"|format(change|abs)}}% and will be
+        {{"%.2f"|format(p)}} 
+    </h2><br>
+
+
+    {%endfor%}
+</div>
+
+
+
+<div style="display: inline-block; vertical-align:top;width:40%;">
+    <h2>Select Company for Show The prediction Comparission</h2><br><br>
+    <form style="text-align: center;" action="/prediction" method="post">
+        <select name="company_list" multiple size="4">
+            {%for i in data['company']%}
+            <option value={{i}}>{{i}}</option>
+            {%endfor%}
+        </select><br>
+        <input type="submit">
+
+    </form>
+
+</div>
+
+{%endblock%}

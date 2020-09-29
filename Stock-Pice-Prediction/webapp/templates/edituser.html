@@ -1,0 +1,14 @@
+<div  style="text-align: center; padding:20px">
+
+    <form action="/edituser" method="POST">
+        {%for row in data%}
+        <input type="text" required="" placeholder="Full Name" name="fname" value={{row.0}}><br><br>
+        <input type="text" required="" placeholder="User Name" name="uid" value={{row.1}}><br><br>
+        <input type="email" required="" placeholder="Email" name="mail" value={{row.2}} readonly><br><br>
+        <input type="password" required="" placeholder="Password" name="pass" value={{row.3}}><br><br>
+        <input type="text" required="" placeholder="user type" name="utype" value={{row.4}}><br><br>
+        <input type="submit">
+        {%endfor%}
+    </form>
+        
+    </div>

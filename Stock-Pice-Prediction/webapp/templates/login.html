@@ -1,0 +1,13 @@
+{%extends 'home.html'%}
+{% block marq%}{%endblock%}
+{% block content%}
+<form action="/login" method="POST">
+    <div  style="text-align: center; padding:20px" >
+       
+        Enter Your Email: <input  type="email" required="" placeholder="Email" name="mail"><br><br>
+        Enter Your Password: <input  type="password" required="" placeholder="Password" name="pass"><br><br>
+        <input type="Submit" placeholder="">
+    </div>
+   
+</form>
+{% endblock %}

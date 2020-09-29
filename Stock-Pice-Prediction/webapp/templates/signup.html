@@ -1,0 +1,16 @@
+{%extends 'home.html'%}
+{% block marq%}{%endblock%}
+{% block content%}
+<div  style="text-align: center; padding:20px">
+
+<form action="/signup" method="POST">
+    <input type="text" required="" placeholder="Full Name" name="fname"><br><br>
+    <input type="text" required="" placeholder="User Name" name="uid"><br><br>
+    <input type="email" required="" placeholder="Email" name="mail"><br><br>
+    <input type="password" required="" placeholder="Password" name="pass"><br><br>
+    <input type="checkbox" id="formCheck-1" required="" checked=""><label class="form-check-label" for="formCheck-1">I agree all the terms and conditions.</label><br><br>
+    <input type="submit">
+</form>
+    
+</div>
+{% endblock %}

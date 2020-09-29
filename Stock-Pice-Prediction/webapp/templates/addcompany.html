@@ -1,0 +1,14 @@
+{%extends 'index.html'%}
+{%block marq%}
+{%endblock%}
+{% block content%}
+<div  style="text-align: center; padding:20px">
+
+<form action="/addcompany" method="POST">
+    <input type="text" required="" placeholder="Company Name" name="c_name"><br><br>
+    <input type="text" required="" placeholder="Company Code" name="c_code"><br><br>
+    <input type="submit">
+</form>
+    
+</div>
+{% endblock %}

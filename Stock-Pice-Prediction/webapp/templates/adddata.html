@@ -1,0 +1,11 @@
+{%extends 'index.html'%}
+{%block marq%}
+{%endblock%}
+{% block content%}
+<div  style="text-align: center; padding:20px">
+<form action = "/adddata" method = "post" enctype="multipart/form-data">  
+    <input type="file" name="file" />  
+    <input type = "submit" value="Upload">  
+</form>  
+</div>
+{% endblock %}

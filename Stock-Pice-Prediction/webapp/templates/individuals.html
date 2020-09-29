@@ -1,0 +1,99 @@
+{%extends 'index.html'%}
+{%block user%}
+{%if user=='admins'%}
+<li><a href="/users">Users List</a></li>
+<li><a href="/companies">Company List</a></li>
+<li><a href="/addcompany">Add Companies</a></li>
+<li><a href="/adddata">Add Data</a></li>
+<li><a href="/prediction">Prediction</a></li>
+<li><a href="/reports">Reports</a></li>
+{%endif%}
+{%endblock%}
+{%block marq%}
+
+{%endblock%}
+{%block content%}
+<h1 style="text-align: center;">{{cpy}}</h1>
+<div style="float:left; padding:20px" >
+    <h3>Last Trade Price According to Date and Time</h3>
+    <table border="1"style="text-align: center;">
+        <tr>
+            <th>Date</th>
+            <th>High</th>
+            <th>Low</th>
+            <th>Close</th>
+        </tr>
+        {%for d in data%}
+        <tr>
+            <td>{{d.0}}</td>
+            <td>{{d.2}}</td>
+            <td>{{d.3}}</td>
+            <td>{{d.4}}</td>
+    
+        </tr>
+        {%endfor%}
+    </table>
+    
+</div>
+<div style="float: right;" >
+    <div id="mydiv1" data-x='{{x|tojson}}'></div>
+    <div id="mydiv2" data-y='{{y|tojson}}'></div>
+<div style="position: relative; height:30vh; width:50vw">
+    <canvas id="myChart" width="600" height="400"></canvas>
+    <div>
+        <h1>See Previous Day Prices</h1>
+        <form action="/previndividual" method="POST">
+            <input type="date" required="" placeholder="mm/dd/yy" name="f_date"> to <input type="date" required="" placeholder="mm/dd/yy" name="t_date"> <input type="submit"><br><br> 
+            
+        </form>
+    </div>
+</div>
+    
+<script>
+    var x=JSON.parse(document.getElementById("mydiv1").dataset.x)
+    var y=JSON.parse(document.getElementById("mydiv2").dataset.y)
+var ctx = document.getElementById('myChart').getContext('2d');
+var myChart = new Chart(ctx, {
+    type: 'line',
+    data: {
+        labels: x,
+        datasets: [{
+            label: 'Close Price',
+            data:y,
+            fill:false,
+            backgroundColor: [
+                'rgba(255, 99, 132, 0.2)',
+                'rgba(54, 162, 235, 0.2)',
+                'rgba(255, 206, 86, 0.2)',
+                'rgba(75, 192, 192, 0.2)',
+                'rgba(153, 102, 255, 0.2)',
+                'rgba(255, 159, 64, 0.2)'
+            ],
+            borderColor: [
+                'rgba(255, 99, 132, 1)',
+                'rgba(54, 162, 235, 1)',
+                'rgba(255, 206, 86, 1)',
+                'rgba(75, 192, 192, 1)',
+                'rgba(153, 102, 255, 1)',
+                'rgba(255, 159, 64, 1)'
+            ],
+            borderWidth: 1
+        }]
+    },
+    options: {
+        scales: {
+            yAxes: [{
+                ticks: {
+                    beginAtZero: true
+                }
+            }]
+        }
+    }
+});
+
+
+</script>
+    
+</div>
+
+{%endblock%}

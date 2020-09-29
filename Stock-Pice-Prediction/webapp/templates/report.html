@@ -1,0 +1,157 @@
+{%extends 'index.html'%}
+{% block marq%}{%endblock%}
+{% block content%}
+<style>
+    td.max { font-weight: bold; color:blue }
+    td.min { font-weight: bold; color: red; }
+</style>
+<div id="doprint" style="padding: 20px; ">
+<h3>Newly Added Company This Year:</h3>
+<table border="1">
+    <tr>
+        <th>Name</th>
+        <th>Code</th>
+        <th>Date Added</th>
+  </tr>
+    {%for i in new_company%}
+    <tr>
+        <th>{{i['cn']}}</th>
+        <th>{{i['cc']}}</th>
+        <th>{{i['date']}}</th>
+    </tr>
+{%endfor%}
+</table >
+
+<h3>Last 7 Days Preview</h3>
+
+
+<table id="mytable" border="1" style="text-align: center;">
+    <thead>
+    <tr>
+        <th>Name</th>
+        {% for i in data[0]['dates'] %}
+        <th class="price">{{i}}</th>
+        {%endfor%}
+        <th >Average<br>(close price)</th>
+    </tr>
+</thead>
+<tbody>
+
+    {%for d in data%}
+    <tr>
+        <td>{{d['cname']}}</td>
+        {%for i in d['price']%}
+        <td>{{i}}</td>
+        {%endfor%}
+        <td>{{"%.2f"|format(d['avg'])}}</td>
+    </tr>
+    {%endfor%}
+    </tbody>
+</table>
+</div>
+<button style=" position:relative;left:50%;" onclick="printdiv()">Print Report</button>
+
+
+<script>
+    function printdiv() {
+        var originalcontent = document.body.innerHTML;
+        var printable = document.getElementById('doprint').innerHTML;
+        document.body.innerHTML = printable;
+        window.print();
+        document.body.innerHTML = originalcontent;
+    }
+
+    function markColumnCeilings ( table ) {
+
+        if ( table === null ) return;
+    
+        var thead = table.tHead,
+            tbody = table.tBodies[0],
+            rowCount = tbody.rows.length,
+            colCount = thead.rows[0].cells.length,
+            maxvalues = new Array( colCount ),
+            maxCells = new Array( colCount ),
+            i = rowCount - 1,
+            j = colCount - 1,
+            cell, value;
+    
+        // Loops through rows/columns to get col ceilings
+        for ( ; i > -1 ; i-- ) {
+    
+            for ( ; j > 0 ; j-- ) {
+    
+                cell = tbody.rows[ i ].cells[ j ];
+                value = parseFloat( cell.innerHTML );
+                console.log(value)
+                if ( value.toString() === "NaN" ) continue;
+    
+                if ( value > ( maxvalues[ j ] === undefined ? -1 : maxvalues[ j ] ) ) {
+                    maxvalues[ j ] =  value;
+                    maxCells[ j ] = i + "," + j;
+                }
+    
+            }
+    
+            j = colCount - 1;
+    
+        }
+    
+        // Set classes
+        for ( ; j > 0 ; j-- ) {
+            tbody.rows[ maxCells[ j ].split( "," )[ 0 ] ]
+                 .cells[ maxCells[ j ].split( "," )[ 1 ] ]
+                 .setAttribute( "class", "max" );
+        }
+    
+    }
+
+
+    function markColumnflorring ( table ) {
+
+        if ( table === null ) return;
+    
+        var thead = table.tHead,
+            tbody = table.tBodies[0],
+            rowCount = tbody.rows.length,
+            colCount = thead.rows[0].cells.length,
+            maxvalues = new Array( colCount ),
+            maxCells = new Array( colCount ),
+            i = rowCount - 1,
+            j = colCount - 1,
+            cell, value;
+    
+        // Loops through rows/columns to get col ceilings
+        for ( ; i > 0 ; i-- ) {
+    
+            for ( ; j > 0 ; j-- ) {
+    
+                cell = tbody.rows[ i ].cells[ j ];
+                value = parseFloat( cell.innerHTML );
+    
+                if ( value.toString() === "NaN" ) continue;
+    
+                if ( value < ( maxvalues[ j ] === undefined ? value+1 : maxvalues[ j ] ) ) {
+                    maxvalues[ j ] =  value;
+                    maxCells[ j ] = i + "," + j;
+                }
+    
+            }
+    
+            j = colCount - 1;
+    
+        }
+    
+        // Set classes
+        for ( ; j > 0 ; j-- ) {
+            tbody.rows[ maxCells[ j ].split( "," )[ 0 ] ]
+                 .cells[ maxCells[ j ].split( "," )[ 1 ] ]
+                 .setAttribute( "class", "min" );
+        }
+    
+    }
+    
+    var table = document.getElementById( 'mytable' );
+    markColumnCeilings( table );
+    markColumnflorring( table );
+</script>
+{%endblock%}

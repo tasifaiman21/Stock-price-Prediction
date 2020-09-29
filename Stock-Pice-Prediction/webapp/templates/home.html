@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Home</title>
+    <link rel="stylesheet" href="/static/css/home.css">
+</head>
+<body>
+        <ul>
+            <li><a class="active" href="/">Home</a></li>
+            <li style="float: right;"><a href="/login">LogIn</a></li>
+            <li style="float: right;"><a href="/signup">SignUp</a></li>
+          </ul>        
+          {% block marq%}
+          <div>
+              <marquee behavior="scroll" direction="left" onmouseover="this.stop()" onmouseout="this.start()"> 
+              <table border="1" style="border-collapse: collapse; border-color:blueviolet">
+                <tr>
+                  {% for i in c['c'] %}
+                  {% set item_1 = c['c'][loop.index-1] %}
+                  <th colspan="3" style="color: chartreuse;">{{ item_1 }}</th>
+                  {% endfor %}
+                </tr>
+                <tr>
+                  {% for i in c['c'] %}
+                  {% set item_2 = c['t'][loop.index-1] %}
+                  {% set item_3 = c['st'][loop.index-1] %} 
+                  {%if item_3 is defined%}
+                  <td style="padding-right:5px">L:{{ item_2 }}</td>
+                  <td style="padding-right:5px">C:{{"%.2f"|format(item_2-item_3)}}</td>
+                  <td style="padding-right:5px">{%if item_2 !=0 %}{{"%.2f"|format(((item_2-item_3)/item_2)*100)}}{%endif%}%</td>                 
+                  {%else%}
+                  <td style="padding-right:5px">L:0</td>
+                  <td style="padding-right:5px">C:0</td>
+                  <td style="padding-right:5px">0</td>                 
+                  {%endif%}
+                  {% endfor %}
+                </tr>
+              
+            </table>
+              </marquee>
+          </div>
+          {%endblock%}
+
+          <div>
+            {% block content%}
+            {%endblock%}
+          </div>
+         
+
+</body>
+</html>

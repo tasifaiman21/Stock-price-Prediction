@@ -1,0 +1,32 @@
+{%extends 'index.html'%}
+{%block marq%}
+{%endblock%}
+{% block content%}
+<div style="text-align: center; padding:20px">
+  <table border="1" align="center">
+        <tr>
+            <th>Full Name</th>
+            <th>User Name</th>
+            <th>User Mail</th>
+            {%if user=='admins'%}
+            <th>User Password</th>
+            <th>User Type</th>
+            {%endif%}
+        </tr>
+        {%for row in data%}
+        <tr>
+            <td>{{row.0}}</td>
+            <td>{{row.1}}</td>
+            <td>{{row.2}}</td>
+            
+            {%if user=='admins'%}
+            <td>{{row.3}}</td>
+            <td>{{row.4}}</td>
+            <td><form action="/edituser"  method="GET"><button name="c_mail" value={{row.2}}>Edit</button></form></td>
+            <td><form action="/deleteuser"  method="POST"><button name="c_mail" value={{row.2}}>Delete</button></form></td>
+            {%endif%}
+        </tr>
+        {%endfor%}
+    </table>
+</div>
+{%endblock%}
